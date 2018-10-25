@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.egzosn.jdbc</groupId>
+    <artifactId>params-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.2</version>
+    <name>params-parent</name>
+    <description>
+        For SQL, HQL for packaging, do not need to write their own SQL, automatic generate corresponding entities Param, simply set can achieve the SQL generated
+    </description>
+    <url>https://github.com/egzosn/pay-java-parent</url>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Egan</name>
+            <email>egzosn@gmail.com</email>
+            <url>https://github.com/egzosn</url>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/egzosn/pay-java-parent.git</connection>
+        <developerConnection>scm:git:git@github.com:egzosn/pay-java-parent.git</developerConnection>
+        <url>https://github.com/egzosn/pay-java-parent</url>
+    </scm>
+    <modules>
+        <module>dao-params</module>
+        <module>sql-filter</module>
+    </modules>
+    <properties>
+        <java.version>1.7</java.version>
+    </properties>
+
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
