@@ -82,7 +82,6 @@ public class SqlFilter {
     /**
      * 获得添加过滤字段后加上排序字段的Sql
      *
-     * @return
      */
     public void setOrder() {
 
@@ -119,7 +118,7 @@ public class SqlFilter {
     /**
      * 添加过滤
      *
-     * @param request
+     * @param request 过滤器请求集
      */
     public void addFilter(SqlFilterRequest request) {
         Set<String> names = request.getParameterNames();
@@ -140,14 +139,14 @@ public class SqlFilter {
 
     /**
      * 添加过滤
-     * <p/>
+     *
+     * @param name 参数名
+     * @param value 参数值
+     * <p>
      * 举例，name传递：Q^t#id^|^EQ^S
      * 举例，name传递：Q^t#id^!|^EQ
-     * <p/>
+     * </p>
      * 举例，value传递：0
-     *
-     * @param name
-     * @param value
      */
     public void addFilter(String name, Object value) {
 
@@ -205,6 +204,11 @@ public class SqlFilter {
         }
     }
 
+    /**
+     *  设置主表别名
+     * @param alias 别名
+     * @return sql过滤器
+     */
     public SqlFilter setAlias(String alias) {
         params.setAlias(alias);
         return this;
