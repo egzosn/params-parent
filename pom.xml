@@ -34,9 +34,6 @@
         <module>dao-params</module>
         <module>sql-filter</module>
     </modules>
-    <properties>
-        <java.version>1.7</java.version>
-    </properties>
 
 
 
