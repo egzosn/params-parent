@@ -1,6 +1,8 @@
 package com.egzosn.jdbc.params.test;
 
+import com.egzosn.jdbc.params.Params;
 import com.egzosn.jdbc.params.Where;
+import com.egzosn.jdbc.params.bean.FreightDaoParams;
 import com.egzosn.jdbc.params.enums.Restriction;
 import com.egzosn.jdbc.params.utils.BaseJdbcRepository;
 
@@ -16,8 +18,10 @@ public class Test {
 
     public static void main(String[] args) {
         BaseJdbcRepository repository = new BaseJdbcRepository("USER");
+        //以某个列进行查询对应的实体
         repository.findByProperty("name", "张三");
 
+        //以条件对象的形式
         Where where = new Where().where() ;
         where.setAlias("u");
         where.and("name", "李四")
@@ -26,23 +30,40 @@ public class Test {
         ;
         repository.queryList(where, false);
 
+
+        //以id进行删除
         repository.delete(1);
+
+        //id集
         List ids = Arrays.asList(1,2,3);
         repository.delete(ids);
 
+        //更新
         Map<String, Object> updateField = new HashMap<>(2);
         updateField.put("sex", "男");
         updateField.put("age", 24);
-
         where = new Where() ;
         where.setAlias("u");
         where.and("name", "李四")
         ;
         repository.update(updateField, where);
 
+        // 冒号代替形式
         Map<String, Object> values = new HashMap<>(2);
         values.put("ids", ids);
         repository.delete(" delete from USER  where id in( :ids)", values);
+
+        //查询对象式
+        FreightDaoParams params = new FreightDaoParams()
+                .setCountry("中国", false)
+                .setNameLK("铁塔", false)
+
+                ;
+        params.order(FreightDaoParams.Field.countryShortEn.getColumn(), params.alias());
+
+        repository.setTable(FreightDaoParams.TABLE);
+        repository.uniqueQuery(params);
+
     }
 
 }
