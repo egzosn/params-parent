@@ -1,5 +1,5 @@
 # params-parent
-
+### 案例 com.egzosn.jdbc.params.test.Test
 ```java
 
     BaseJdbcRepository repository = new BaseJdbcRepository(FreightDaoParams.TABLE);
@@ -53,6 +53,30 @@
         //删除获取sql
         repository.delete(" delete from USER  where id in( :ids)", values);
 
+```
+### 执行结果
+
+```html
+sql: select * from USER  z  where  z.name= ? 
+张三 
+
+sql: select * from USER  u  where  name= ?  and age between ? and ?  Order by name DESC 
+[李四, 12, 24] 
+
+sql: delete from USER  where id = ?
+1 
+
+sql: delete from USER  where id in( ?,?,?)
+1 2 3 
+
+sql: update USER u set u.age=?, u.sex=?  where  name= ? 
+24 男 李四 
+
+sql:  delete from USER  where id in( ?,?,?)
+1 2 3
+ 
+sql: select * from freight  f  where  f.country= ?  and f.name like ?  Order by f.country_short_en DESC 
+中国 %铁塔%
  
 
 
