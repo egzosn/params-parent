@@ -7,12 +7,12 @@
         FreightDaoParams params = new FreightDaoParams()
                 .setCountry("中国", false)
                 .setNameLK("铁塔", false)
-
                 ;
         params.order(FreightDaoParams.Field.countryShortEn.getColumn(), params.alias());
-      
-        repository.uniqueQuery(params);
         
+        //查询获取sql
+        repository.uniqueQuery(params);
+        //重新设置表名
         repository.setTable("USER");
       
         //以某个列进行查询对应的实体
@@ -25,6 +25,7 @@
         .and("age", new Long[]{12L, 24L}, Restriction.BW)
         .order("name")
         ;
+        //查询获取sql
         repository.queryList(where, false);
 
 
@@ -43,11 +44,13 @@
         where.setAlias("u");
         where.and("name", "李四")
         ;
+        //更新获取sql
         repository.update(updateField, where);
 
         // 冒号代替形式
         Map<String, Object> values = new HashMap<>(2);
         values.put("ids", ids);
+        //删除获取sql
         repository.delete(" delete from USER  where id in( :ids)", values);
 
  
