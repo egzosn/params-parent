@@ -57,6 +57,9 @@
 ### 执行结果
 
 ```html
+sql: select * from freight  f  where  f.country= ?  and f.name like ?  Order by f.country_short_en DESC 
+中国 %铁塔%
+
 sql: select * from USER  z  where  z.name= ? 
 张三 
 
@@ -75,8 +78,7 @@ sql: update USER u set u.age=?, u.sex=?  where  name= ?
 sql:  delete from USER  where id in( ?,?,?)
 1 2 3
  
-sql: select * from freight  f  where  f.country= ?  and f.name like ?  Order by f.country_short_en DESC 
-中国 %铁塔%
+
  
 
 
