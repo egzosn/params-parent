@@ -62,7 +62,7 @@ public class BaseJdbcRepository<T> extends SupportJdbcRepository<T>  {
      * @param value
      *            值
      * @param restriction
-     *            约束名称 参考 {@link com.egzosn.jdbc.params.enums.Restriction}
+     *            约束名称 参考 {@link Restriction}
      * @return List
      */
     @SuppressWarnings("unchecked")
@@ -103,7 +103,7 @@ public class BaseJdbcRepository<T> extends SupportJdbcRepository<T>  {
      * @param value
      *            值
      * @param restriction
-     *            约束名称 参考 {@link com.egzosn.jdbc.params.enums.Restriction} 的所有实现类
+     *            约束名称 参考 {@link Restriction} 的所有实现类
      * @return Object
      */
     public T findUniqueByProperty(String propertyName, Object value, Restriction restriction) {

@@ -30,21 +30,23 @@ public class Where extends QueryParams {
     private Map<String, Object[]> wheres = new LinkedHashMap<String, Object[]>();
     protected Map<String, Object> attrs = new LinkedHashMap<String, Object>();
     protected List<Object> paras = new ArrayList<Object>();
-    protected  String alias = "";
+
     public Where() {
-
+        where();
     }
 
-    public void setAlias(String alias) {
+    public Where setAlias(String alias) {
         this.alias = alias;
+        return this;
     }
 
-    public  Where(String propertyName, Object value, String prefix) {
-       
+
+    public Where(String propertyName, Object value, String prefix) {
+
         add(propertyName, value, AndOr.NUL, Restriction.EQ, prefix);
     }
 
-    public  Where(String propertyName, Object value) {
+    public Where(String propertyName, Object value) {
         this(propertyName, value, null);
     }
 
@@ -54,24 +56,26 @@ public class Where extends QueryParams {
 
 
     public QueryParams builderAttrs() {
-       if (null != getWhere()) super.builderAttrs();
-        else {
-           if (null == sql) sql = new StringBuilder();
-
-           sql.append(toSQL());
-       }
+        if (null != getWhere()) {
+            super.builderAttrs();
+            return this;
+        }
+        if (null == sql) {
+            sql = new StringBuilder();
+        }
+        sql.append(toSQL());
         return this;
     }
 
     public QueryParams builderParas() {
-        if (null != getWhere()) super.builderParas();
-        else {
-            if (null == sql) sql = new StringBuilder();
-
-            sql.append(toFormatSQL());
+        if (null != getWhere()) {
+            super.builderParas();
+            return this;
         }
-
-
+        if (null == sql) {
+            sql = new StringBuilder();
+        }
+        sql.append(toFormatSQL());
         return this;
     }
 
@@ -97,6 +101,7 @@ public class Where extends QueryParams {
         add(propertyName, value, AndOr.OR, restriction, null);
         return this;
     }
+
     public Where or(String propertyName, Object value, Restriction restriction, String prefix) {
         add(propertyName, value, AndOr.OR, restriction, prefix);
         return this;
@@ -114,24 +119,31 @@ public class Where extends QueryParams {
         add(propertyName, value, null);
         return this;
     }
+
     public Where add(String propertyName, Object value, String prefix) {
-        if (null == first)  first = propertyName;
+        if (null == first) first = propertyName;
         add(propertyName, value, AndOr.NUL, Restriction.EQ, prefix);
         return this;
     }
+
     protected Where add(String key, Object value, AndOr andor, Restriction restriction, String prefix) {
-       if (null == first){
-           first = key;
-           andor = AndOr.NUL;
-       }
+        if (null == first) {
+            first = key;
+            andor = AndOr.NUL;
+        }
+        if (null == prefix) {
+            prefix = alias;
+        }
         switch (restriction) {
             case NUL:
             case NNUL:
-                wheres.put(key, new Object[]{null, andor, restriction, prefix });
+                wheres.put(key, new Object[]{null, andor, restriction, prefix});
                 break;
             default:
                 if (null == value || "".equals(value)) {
-                        if (key.equals(first)) first = null;
+                    if (key.equals(first)) {
+                        first = wheres.keySet().iterator().next();
+                    }
                     wheres.remove(key);
                 } else {
                     wheres.put(key, new Object[]{value, andor, restriction, prefix});
@@ -148,11 +160,11 @@ public class Where extends QueryParams {
         if (null != first) setSql(first, wheres.get(first), sb);
 
         for (String key : wheres.keySet()) {
-            if (key.equals(first)) continue;
-
+            if (key.equals(first)) {
+                continue;
+            }
             Object[] objects = wheres.get(key);
             setSql(key, objects, sb);
-
         }
 
         return " where " + sb.toString();
@@ -174,7 +186,7 @@ public class Where extends QueryParams {
                 sb.append(andOr.toMatchString(prefix, restriction.toMatchString(key)));
                 break;
             case BW:
-                sb.append(andOr.toMatchString(prefix , restriction.toMatchString(key)));
+                sb.append(andOr.toMatchString(prefix, restriction.toMatchString(key)));
                 Object[] value = (Object[]) objects[0];
                 attrs.put(String.format("%s1", key), value[0]);
                 attrs.put(String.format("%s2", key), value[1]);
@@ -191,7 +203,7 @@ public class Where extends QueryParams {
     }
 
 
-    public String alias(){
+    public String alias() {
         return alias;
     }
 

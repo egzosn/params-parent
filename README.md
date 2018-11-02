@@ -1,5 +1,5 @@
 # params-parent
-### 案例 com.egzosn.jdbc.params.test.Test
+### 案例 Test
 ```java
 
     BaseJdbcRepository repository = new BaseJdbcRepository(FreightDaoParams.TABLE);

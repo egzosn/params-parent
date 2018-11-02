@@ -17,13 +17,18 @@
 package com.egzosn.jdbc.params.filter;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by egan on 2015/12/1.
  * 类型简化集
  */
 public enum  Type {
+
     i {
         public Object parse(String parse) {
            return Integer.parseInt(parse);
@@ -46,7 +51,15 @@ public enum  Type {
         }
    }, D {
         public Object parse(String parse) {
-           return new Date(parse);
+            try {
+                if (parse.contains(" ")){
+                    return dtf.parse(parse);
+                }
+                return df.parse(parse);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return new Date(parse);
         }
   }, b {
         public Object parse(String parse) {
@@ -58,5 +71,13 @@ public enum  Type {
         }
     };
 
+    public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    static {
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+8");
+        df.setTimeZone(timeZone);
+        dtf.setTimeZone(timeZone);
+    }
     public abstract Object parse(String parse);
 }

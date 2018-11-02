@@ -1,68 +1,52 @@
 package com.egzosn.jdbc.params.test;
 
 import com.egzosn.jdbc.params.Params;
+import com.egzosn.jdbc.params.QueryParams;
 import com.egzosn.jdbc.params.Where;
-import com.egzosn.jdbc.params.bean.FreightDaoParams;
+import com.egzosn.jdbc.params.bean.OdOrderDaoParams;
 import com.egzosn.jdbc.params.enums.Restriction;
-import com.egzosn.jdbc.params.utils.BaseJdbcRepository;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * Created by egan on 2018/10/25.
+ * Created by egan on 2018/11/1.
+ * <a href="mailto:egzosn@gmail.com">郑灶生</a>
+ * <br/>
+ * email: egzosn@gmail.com
  */
+
 public class Test {
 
-    public static void main(String[] args) {
-        BaseJdbcRepository repository = new BaseJdbcRepository("USER");
-        //以某个列进行查询对应的实体
-        repository.findByProperty("name", "张三");
+    public static void main(String[] args) throws ParseException {
 
-        //以条件对象的形式
-        Where where = new Where().where() ;
-        where.setAlias("u");
-        where.and("name", "李四")
-        .and("age", new Long[]{12L, 24L}, Restriction.BW)
-        .order("name")
-        ;
-        repository.queryList(where, false);
+        Params params = QueryParams.WHERE("name", "张三", "user").setAlias("user").and("age", 12).order("sex").group("name");
+        System.out.println(params.builderParas().getSqlString());
+        System.out.println(params.getParas());
 
+        params  = new Where().setAlias("user").and("name", "张三").and("age", new Integer[]{1, 12}, Restriction.BW).order("sex").group("name");
+        System.out.println(params.builderParas().getSqlString());
+        System.out.println(params.getParas());
 
-        //以id进行删除
-        repository.delete(1);
+        System.out.println(params.builderAttrs().getSqlString());
+        System.out.println(params.getAttrs());
 
-        //id集
-        List ids = Arrays.asList(1,2,3);
-        repository.delete(ids);
+        params  = new Where().setAlias("user").and("name", "张三").and("age", 1, Restriction.GT).and("$1$age", 12, Restriction.LE).order("sex").group("name");
 
-        //更新
-        Map<String, Object> updateField = new HashMap<>(2);
-        updateField.put("sex", "男");
-        updateField.put("age", 24);
-        where = new Where() ;
-        where.setAlias("u");
-        where.and("name", "李四")
-        ;
-        repository.update(updateField, where);
+        System.out.println(params.builderParas().getSqlString().replaceAll("\\.\\$[0-9]\\$", "."));
+        System.out.println(params.getParas());
 
-        // 冒号代替形式
-        Map<String, Object> values = new HashMap<>(2);
-        values.put("ids", ids);
-        repository.delete(" delete from USER  where id in( :ids)", values);
-
-        //查询对象式
-        FreightDaoParams params = new FreightDaoParams()
-                .setCountry("中国", false)
-                .setNameLK("铁塔", false)
-
+       DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+       params = new OdOrderDaoParams()
+                .setName("张三", false)
+                .setOrderCreateTimeBetween(new Date[]{df.parse("2018-11-01"), df.parse("2018-11-02")}, false)
+                .order(OdOrderDaoParams.Field.shipType.getColumn())
                 ;
-        params.order(FreightDaoParams.Field.countryShortEn.getColumn(), params.alias());
 
-        repository.setTable(FreightDaoParams.TABLE);
-        repository.uniqueQuery(params);
+        System.out.println(params.builderParas().getSqlString());
+        System.out.println(params.getParas());
 
     }
 
